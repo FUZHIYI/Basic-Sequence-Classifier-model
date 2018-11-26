@@ -26,13 +26,13 @@ It's based on the repo: https://github.com/triplemeng/hierarchical-attention-mod
 
 2. pre-train word embeddings
 
-  ```python
+  ```
   cd ./code
   python gen_word_embeddings.py
   #By default, the embedding size is 50, it's usually used for Imdb data)
   ```
 
-   If you don't want to used pre-trained embedding, it could be configured later, but here it's still needed for vocabulary statistics.
+  If you don't want to used pre-trained embedding, it could be configured later, but here it's still needed for vocabulary statistics.
 
 3. padding and truncating
     If you want to train a single RNN or bidirectional RNN:
@@ -60,6 +60,7 @@ It's based on the repo: https://github.com/triplemeng/hierarchical-attention-mod
 
     Each text (review for Imdb data) will be composed of max_text_length sentences. If the original text is longer than that, we truncate it, and if shorter than that, we append empty sentences to it. And each sentence will be composed of max_sent_length words. If the original sentence is longer than that, we truncate it, and if shorter, we append the replaced word `<pad>` to it. Also, we keep track of the actual number of sentences each text contains, and actual number of words each sentence contains.	
     We directly read in pre-trained embeddings. Here we take the default dictionary size to be 10000. The words are indexed from 1 to 10000. Any words that are not included in the dictionary are marked as `<unk>`, and the index for `<unk>` is 0. The index for `<pad>` is 10001.
+
 
 4. run the model
 
