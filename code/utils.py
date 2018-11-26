@@ -117,7 +117,10 @@ def evaluate(model, sess, df_eval, batch_size=100):
 	for i in range(0, n_eval_batch):
 		batch_x = df_eval['text'][i*batch_size: (i+1)*batch_size].tolist()
 		batch_y = df_eval['label'][i*batch_size: (i+1)*batch_size].tolist()
-		batch_l = df_eval['text_length'][i*batch_size: (i+1)*batch_size].tolist()
+		if 'sents_length' in df_eval:	
+			batch_l = df_eval['sents_length'][i*batch_size: (i+1)*batch_size].tolist()
+		else:
+			batch_l = df_eval['text_length'][i*batch_size: (i+1)*batch_size].tolist()
 		eval_loss, eval_acc = model.eval(sess=sess, batch_X=batch_x, batch_L=batch_l, batch_Y=batch_y)
 		total_eval_loss += eval_loss * batch_size
 		total_eval_acc += eval_acc * batch_size
@@ -146,18 +149,21 @@ def inference(model, sess, df_infer, batch_size=100, outfile=None):
 	n_infer_batch = int(len(df_infer)/batch_size)
 	for i in range(0, n_infer_batch):
 		batch_x = df_infer['text'][i*batch_size: (i+1)*batch_size].tolist()
-		batch_l = df_infer['text_length'][i*batch_size: (i+1)*batch_size].tolist()
+		if 'sents_length' in df_infer:	
+			batch_l = df_infer['sents_length'][i*batch_size: (i+1)*batch_size].tolist()
+		else:
+			batch_l = df_infer['text_length'][i*batch_size: (i+1)*batch_size].tolist()
 		Y_pred = model.infer(sess=sess, batch_X=batch_x, batch_L=batch_l)
-		Y_preds += Y_pred
+		Y_preds += Y_pred[0].tolist()
 	n_done = n_infer_batch * batch_size
 	n_left = len(df_infer) - n_done
 	if n_left > 0:
 		batch_x = df_infer['text'][n_done:].tolist()
 		batch_l = df_infer['text_length'][n_done:].tolist()
 		Y_pred = model.infer(sess=sess, batch_X=batch_x, batch_L=batch_l)
-		Y_preds += Y_pred
+		Y_preds += Y_pred[0].tolist()
 
 	with open(outfile, 'w') as f:
-		Y_preds = [Yp+'\n' for Yp in Y_preds]
+		Y_preds = [str(Yp)+'\n' for Yp in Y_preds]
 		f.writelines(Y_preds)
 	print(" prediction results have been store in %s"%outfile)
