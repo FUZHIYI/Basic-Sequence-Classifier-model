@@ -85,7 +85,7 @@ It's based on the repo: https://github.com/triplemeng/hierarchical-attention-mod
 
     There're lots of hyper-params you could use here, but none of them is neccessary:
 
-    ```python
+    ```sh
     python train.py
     
     --is_inference True # False by default, use an already trained model to inference on certain dataset.
