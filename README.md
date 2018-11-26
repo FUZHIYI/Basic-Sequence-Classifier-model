@@ -26,11 +26,11 @@ It's based on the repo: https://github.com/triplemeng/hierarchical-attention-mod
 
 2. pre-train word embeddings
 
-  ```
-  cd ./code
-  python gen_word_embeddings.py
-  #By default, the embedding size is 50, it's usually used for Imdb data)
-  ```
+    ```
+    cd ./code
+    python gen_word_embeddings.py
+    #By default, the embedding size is 50, it's usually used for Imdb data)
+    ```
 
   If you don't want to used pre-trained embedding, it could be configured later, but here it's still needed for vocabulary statistics.
 
